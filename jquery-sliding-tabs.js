@@ -32,7 +32,7 @@ limitations under the License.
 
                 	        var $handle = jQuery(this);	// TODO: what if you pass in multiple handles, should each over these.
                         	var $box = $handle.next(settings.contents);
-
+					
 				var cssSize = {width: settings.width};
 				if(settings.height !== null)
 					cssSize.height = settings.height;
@@ -50,10 +50,10 @@ limitations under the License.
                 	                handleHeight:   parseInt($handle.outerHeight(), 10) + 'px'
                         	};
 
-	                        $box.css(   { position: 'absolute', lineHeight:1 });
-        	                $handle.css({ position: 'absolute', lineHeight:1 });
+	                        $box.css(    { position: 'absolute', lineHeight:1 } );
+        	                $handle.css( { position: 'absolute', lineHeight:1 } );
 
-                	        if($lastHandle == null) {
+                	        if($lastHandle === null) {
                         	        $handle.position({
 	                                        my: "left bottom",
         	                                at: "left bottom",
@@ -100,6 +100,8 @@ limitations under the License.
         			                bottom: 0
                                 	});
 	                        };
+				
+				$handle.data("jquery-sliding-tabs", {settings: settings, box: $box, slide:{in: slideIn, out:slidOut}});
 
         	                slideOut($box);
                 	        $handle.click(function(e) {
@@ -115,9 +117,34 @@ limitations under the License.
         	        });
 		},
 
+		open: function() {
+			var jqst = $(this).data("jquery-sliding-tabs");
+			jqst.slide.in();
+		},
+
+		closed: function() {
+			var jqst = $(this).data("jquery-sliding-tabs");
+			jqst.slide.out();
+		},
+
 		destroy: function() { 
-	
+			var jqst = $(this).data("jquery-sliding-tabs");
+			jqst.box.remove();
+			$(selector).remove();
 		}
 	};
+
+
+	$.fn.slidingTabs = function(method) {		
+	    	if ( methods[method] ) {
+      			return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+	    	} else if ( typeof method === 'object' || ! method ) {
+      			return methods.create.apply( this, arguments );
+	    	} else {
+      			$.error( 'Method ' +  method + ' does not exist on jQuery.slidingTabs' );
+	    	}    
+  
+		return this;
+	}
 	
-});
+})(jQuery);
