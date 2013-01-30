@@ -12,11 +12,15 @@ Coming soon.
 
 ![Closed Drawer](http://i.imgur.com/Lx8deUN.png)
 
-All (three) drawers are closed (not slide out). When the user clicks on one (or more than one), it slides out appropriately:
+*All (three) drawers are closed (not slide out). When the user clicks on one (or more than one), it slides out appropriately:*
+
+
 
 ![Open Drawer](http://i.imgur.com/FmSGWv2.png)
 
-The user can then re-click it to close. In a future version, options to close when clicking outside the region or open/close on hover are on the todo list.
+*The user can then re-click it to close. In a future version, options to close when clicking outside the region or open/close on hover are on the todo list.*
+
+
 
 ## Known Issues
 
