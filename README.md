@@ -6,7 +6,19 @@ It is dependent on both jQuery and jQuery UI (!), which is a little heavy, but t
 
 ## Instructions
 
-Coming soon. 
+1. Write some markup that has anchor tags as "handles" (styled as you wish, see "Sliding Tab Handle CSS" subheader below) and then divs with a particular class (by default ".contents"). This "contents" div is selected by the following element (jQuery.next), so make sure they're in order.
+2. Call jQuery(".handle").slidingTabs("create", options), where .handle is your handle. The elements will be positioned.
+3. The entire options object is optional.
+
+## Options
+
+```javascript
+{
+	contents: '.contents',  // the selector for the contents div.
+	width: '250px',         // new: this is now fixed (the handle and the box get the same width)
+	height: null,           // optional: force the heights to be the same (recommended)
+}
+```
 
 ## Screenshots
 
