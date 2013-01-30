@@ -16,7 +16,7 @@ It is dependent on both jQuery and jQuery UI (!), which is a little heavy, but t
 {
 	contents: '.contents',  // the selector for the contents div.
 	width: '250px',         // new: this is now fixed (the handle and the box get the same width)
-	height: null,           // optional: force the heights to be the same (recommended)
+	height: null           // optional: force the heights to be the same (recommended)
 }
 ```
 
