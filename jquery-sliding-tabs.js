@@ -41,7 +41,7 @@ limitations under the License.
 
                 	        var bo = $box.offset();
                         	var ho = $handle.offset();
-        	                var properties = {
+        	                var sizes = {
 	                                boxWidth:       parseInt($box.outerWidth(), 10) + 'px',
                 	                boxHeight:      parseInt($box.outerHeight(), 10) + 'px',
                         	        boxLeft:        parseInt(bo.left, 10) + 'px',
@@ -86,7 +86,7 @@ limitations under the License.
                         	                bottom: '0'
                                 	});
 	                                $handle.animate({
-        	                                bottom: '+' +  properties.boxHeight
+        	                                bottom: '+' +  sizes.boxHeight
                 	                });
                         	};
 
@@ -94,7 +94,7 @@ limitations under the License.
 	                                $box.css("top", "auto");
         	                        $handle.css("top", "auto");
                 	                $box.animate({
-                        	                bottom: '-' + properties.boxHeight
+                        	                bottom: '-' + sizes.boxHeight
                                 	}, function() { $(this).hide(); });
 	                                $handle.animate({
         			                bottom: 0
