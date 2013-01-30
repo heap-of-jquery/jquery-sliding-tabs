@@ -37,21 +37,21 @@ The tabs can be styled however you like. In the screenshots included above, I've
 
 ```css
 .tab {  
-        background: #460282; /* Old browsers */
-        background: -moz-linear-gradient(top,  #460282 0%, #380272 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#460282), color-stop(100%,#380272)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top,  #460282 0%,#380272 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top,  #460282 0%,#380272 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top,  #460282 0%,#380272 100%); /* IE10+ */
-        background: linear-gradient(to bottom,  #460282 0%,#380272 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#460282', endColorstr='#380272',GradientType=0 ); /* IE6-9 */
+	background: #460282; /* Old browsers */
+	background: -moz-linear-gradient(top,  #460282 0%, #380272 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#460282), color-stop(100%,#380272)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #460282 0%,#380272 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #460282 0%,#380272 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #460282 0%,#380272 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #460282 0%,#380272 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#460282', endColorstr='#380272',GradientType=0 ); /* IE6-9 */
 
-        color:#FFF;
-        text-decoration:none;
-        padding:4px;
-        display:block;
-        text-align:center;
-        font-size:24px;
+	color:#FFF;
+	text-decoration:none;
+	padding:4px;
+	display:block;
+	text-align:center;
+	font-size:24px;
 	font-family:'Franklin Gothic Medium', Helvetica, sans-serif
 }
 ```
