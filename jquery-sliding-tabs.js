@@ -25,9 +25,12 @@ limitations under the License.
 					contents: '.contents', 	// the selector for the contents div.
 					width: '250px',		// new: this is now fixed (the handle and the box get the same width)
 					height: null,		// optional: force the heights to be the same (recommended)
+
+
 					// TODO: add left/right/bottom/top stuff.
 					// TODO: add "only one open" option
 					// TODO: add hover vs. click option
+					// TODO: add click outside of region option
 				}, settings = $.extend(defaults, options);
 
                 	        var $handle = jQuery(this);	// TODO: what if you pass in multiple handles, should each over these.
@@ -101,7 +104,11 @@ limitations under the License.
                                 	});
 	                        };
 				
-				$handle.data("jquery-sliding-tabs", {settings: settings, box: $box, slide:{in: slideIn, out:slideOut}});
+				$handle.data("jquery-sliding-tabs", {
+					settings: settings, box: $box, slide:{
+						in: slideIn, out:slideOut
+					}
+				});
 
         	                slideOut($box);
                 	        $handle.click(function(e) {
