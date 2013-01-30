@@ -50,8 +50,8 @@ limitations under the License.
                 	                handleHeight:   parseInt($handle.outerHeight(), 10) + 'px'
                         	};
 
-	                        $box.css(    { position: 'absolute', lineHeight:1 } );
-        	                $handle.css( { position: 'absolute', lineHeight:1 } );
+	                        $box.css(    { position: 'absolute' } );
+        	                $handle.css( { position: 'absolute' } );
 
                 	        if($lastHandle === null) {
                         	        $handle.position({
@@ -101,7 +101,7 @@ limitations under the License.
                                 	});
 	                        };
 				
-				$handle.data("jquery-sliding-tabs", {settings: settings, box: $box, slide:{in: slideIn, out:slidOut}});
+				$handle.data("jquery-sliding-tabs", {settings: settings, box: $box, slide:{in: slideIn, out:slideOut}});
 
         	                slideOut($box);
                 	        $handle.click(function(e) {
