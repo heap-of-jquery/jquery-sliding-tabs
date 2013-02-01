@@ -18,120 +18,165 @@ limitations under the License.
 */
 
 (function($) {
-	var $lastHandle = null;
 	var methods = {
 		create: function(options) {
 				var defaults = {
 					contents: '.contents', 	// the selector for the contents div.
 					width: '250px',		// new: this is now fixed (the handle and the box get the same width)
 					height: null,		// optional: force the heights to be the same (recommended)
+					offset: 0,		// optional: this will offset from the bottom (side) by this size.
+								// the reason you'd want to do this is to have something along the bottom (say a footer) that the tabs stick out of. make sure it's z-index is high!
 
-
-					// TODO: add left/right/bottom/top stuff.
+					position: "bottom"	// bottom or top for now
+					// TODO: add left/right with rotation.
 					// TODO: add "only one open" option
 					// TODO: add hover vs. click option
 					// TODO: add click outside of region option
 				}, settings = $.extend(defaults, options);
 
-                	        var $handle = jQuery(this);	// TODO: what if you pass in multiple handles, should each over these.
-                        	var $box = $handle.next(settings.contents);
-					
-				var cssSize = {width: settings.width};
-				if(settings.height !== null)
-					cssSize.height = settings.height;
-				$box.css(cssSize);
-				$handle.css(cssSize);
+				var $lastHandle = null;
+				jQuery(this).each(function() { 
+	                	        var $handle = jQuery(this);	
+        	                	var $box = $handle.next(settings.contents);
+						
+					var cssSize = {width: settings.width};
+					if(settings.height !== null)
+						cssSize.height = settings.height;
+					$box.css(cssSize);
+					$handle.css(cssSize);
+	
+                		        var bo = $box.offset();
+        	                	var ho = $handle.offset();
+        	        	        var sizes = {
+	                        	        boxWidth:       parseInt($box.outerWidth(), 10) + 'px',
+                	                	boxHeight:      parseInt($box.outerHeight(), 10) + 'px',
+	                        	        boxLeft:        parseInt(bo.left, 10) + 'px',
+		                                handleLeft:     parseInt(ho.left, 10) + 'px',
+        		                        handleWidth:    parseInt($handle.outerWidth(), 10) + 'px',
+                		                handleHeight:   parseInt($handle.outerHeight(), 10) + 'px'
+                        		};
 
-                	        var bo = $box.offset();
-                        	var ho = $handle.offset();
-        	                var sizes = {
-	                                boxWidth:       parseInt($box.outerWidth(), 10) + 'px',
-                	                boxHeight:      parseInt($box.outerHeight(), 10) + 'px',
-                        	        boxLeft:        parseInt(bo.left, 10) + 'px',
-	                                handleLeft:     parseInt(ho.left, 10) + 'px',
-        	                        handleWidth:    parseInt($handle.outerWidth(), 10) + 'px',
-                	                handleHeight:   parseInt($handle.outerHeight(), 10) + 'px'
-                        	};
+		                        $box.css(    { position: 'absolute' } );
+        		                $handle.css( { position: 'absolute' } );
 
-	                        $box.css(    { position: 'absolute' } );
-        	                $handle.css( { position: 'absolute' } );
+					var spacing = 8;
+					var locations = {
+						bottom: {
+							first: {
+								anchor: ["left", "bottom"],
+								position: ["left", "bottom+" + settings.offset]
+							},
+							handles: {
+								anchor: ["left", "bottom"],
+								position: ["right+" + spacing, "top"]
+							},
+							box: {
+								anchor: ["left", "top"],
+								position: ["left", "bottom"]
+							}
+						},
+	
+						top: {
+							first: {
+								anchor: ["left", "top"],
+								position: ["left", "top+" + settings.offset]
+							},
+							handles: {
+								anchor: ["left", "top"],
+								position: ["right+" + spacing, "bottom"]
+							},
+							box: {
+								anchor: ["left", "bottom"],
+								position: ["left", "top"]
+							}	
+						}
+					};
 
-                	        if($lastHandle === null) {
-                        	        $handle.position({
-	                                        my: "left bottom",
-        	                                at: "left bottom",
-                	                        of: "body"
-                        	        });
-                                	$lastBox = $box;
-	                                $lastHandle = $handle;
-        	                } else {
-                	                $handle.position({
-                        	                my: "left bottom",
-                                	        at: "right+8 top",
-                                        	of: $lastBox
-	                                });
-        	                        $lastBox = $box;
-                	                $lastHandle = $handle;
-                        	}
-
-	                        $box.position({
-        	                        my:     "left top",
-                	                at:     "left bottom",
-                        	        of:     $handle
-	                        });
-
-        	                var slideIn = function() {
-                	                $box.css("top", "auto");
-	                                $handle.css("top", "auto");
-
-        	                        $box.show();
-                	                $box.animate({
-                        	                bottom: '0'
-                                	});
-	                                $handle.animate({
-        	                                bottom: '+' +  sizes.boxHeight
-                	                });
-                        	};
-
-	                        var slideOut = function() {
-	                                $box.css("top", "auto");
-        	                        $handle.css("top", "auto");
-                	                $box.animate({
-                        	                bottom: '-' + sizes.boxHeight
-                                	}, function() { $(this).hide(); });
-	                                $handle.animate({
-        			                bottom: 0
-                                	});
-	                        };
-				
-				$handle.data("jquery-sliding-tabs", {
-					settings: settings, box: $box, slide:{
-						in: slideIn, out:slideOut
+	
+					var position = locations[settings.position];
+	
+					if($lastHandle === null) {
+						// TODO: check if we have to do the join for .position.
+						$handle.position({
+							my: position.first.anchor.join(" "),
+							at: position.first.position.join(" "), 
+							of: "body"
+						});
+						$lastBox = $box;
+						$lastHandle = $handle;
+					} else {
+						$handle.position({
+							my: position.handles.anchor.join(" "),
+							at: position.handles.position.join(" "),
+							of: $lastBox
+						});
+						$lastBox = $box;
+						$lastHandle = $handle;
 					}
-				});
 
-        	                slideOut($box);
-                	        $handle.click(function(e) {
-                        	        e.preventDefault();
-                                	if($box.hasClass("open")) {
-                                        	$box.removeClass("open");
-	                                        slideOut();
-        	                        } else {
-                	                        $box.addClass("open");
-                        	                slideIn();
-                                	}
-	                        });
-        	        });
+
+					$box.position({
+						my:     position.box.anchor.join(" "),
+						at:     position.box.position.join(" "),
+						of:     $handle
+					});
+
+
+					// TODO: slide in/out needs to consider what mode we're in
+        		                var slideIn = function() {
+                		                $box.css("top", "auto");
+	                	                $handle.css("top", "auto");
+	
+        		                        $box.show();
+                		                $box.animate({
+                        		                bottom: '0'
+                                		});
+	                                	$handle.animate({
+        	                                	bottom: '+' +  sizes.boxHeight
+	                	                });
+        	                	};
+
+	        	                var slideOut = function() {
+	                	                $box.css("top", "auto");
+        	                	        $handle.css("top", "auto");
+	                	                $box.animate({
+        	                	                bottom: '-' + sizes.boxHeight
+                	                	}, function() { $(this).hide(); });
+	                	                $handle.animate({
+        				                bottom: 0
+                                		});
+		                        };
+					
+					$handle.data("jquery-sliding-tabs", {
+						settings: settings, 
+						box: $box, 
+						slide:{
+							inbound: slideIn, outbound:slideOut
+						}
+					});
+
+        		                slideOut($box);
+                		        $handle.click(function(e) {
+                        		        e.preventDefault();
+                                		if($box.hasClass("open")) {
+	                                        	$box.removeClass("open");
+		                                        slideOut();
+        		                        } else {
+                		                        $box.addClass("open");
+                        		                slideIn();
+                                		}
+		                        });
+				});
 		},
 
 		open: function() {
 			var jqst = $(this).data("jquery-sliding-tabs");
-			jqst.slide.in();
+			jqst.slide.inbound();
 		},
 
 		closed: function() {
 			var jqst = $(this).data("jquery-sliding-tabs");
-			jqst.slide.out();
+			jqst.slide.outbound();
 		},
 
 		destroy: function() { 

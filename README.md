@@ -41,7 +41,7 @@ There are some desirable features on the todo list at this point. This is very m
 * Width must be specified at create time, and it will resize your handle and box to that size. This is so the tabs line up properly, it can be fixed in the future with simple collision detection and repositioning
 * Boxes must be "in order" in the markup. This can be fixed in the future.
 * Specifying height is optional, but the tabs look best if they all open to the same height.
-
+* It would be nice to not have to force positioning for tabs, i.e., have tabs floating that can just hide against the screen and open to anywhere.
 
 ## Sliding Tab Handle CSS
 
