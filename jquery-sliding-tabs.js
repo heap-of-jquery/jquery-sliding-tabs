@@ -96,7 +96,6 @@ limitations under the License.
 						}
 					};
 
-	
 					var position = locations[settings.position];
 					if($lastHandle === null) {
 						// TODO: check if we have to do the join for .position.
@@ -123,7 +122,6 @@ limitations under the License.
 						of:     $handle
 					});
 
-
 					// TODO: slide in/out needs to consider what mode we're in
         		                var slideIn = function() {
                 		                $box.css("top", "auto");
@@ -139,18 +137,19 @@ limitations under the License.
         	                	};
 
 	        	                var slideOut = function(hideFirst) {
+						var animSpeed = "slow";
 						if(typeof hideFirst != "undefined") {
-							$box.hide();
+							animSpeed = 1;
 						}
 
 	                	                $box.css("top", "auto");
         	                	        $handle.css("top", "auto");
 	                	                $box.animate({
         	                	                bottom: '-' + sizes.boxHeight
-                	                	}, function() { $(this).hide(); });
+                	                	}, animSpeed, function() { $(this).hide(); });
 	                	                $handle.animate({
         				                bottom: 0
-                                		});
+                                		}, animSpeed);
 		                        };
 					
 					$handle.data("jquery-sliding-tabs", {
