@@ -43,10 +43,10 @@ limitations under the License.
 					if(settings.height !== null)
 						cssSize.height = settings.height;
 					$box.css(cssSize);
-					var padding_offset = $handle.css("padding-left") + $handle.css("padding-right");
+					var padding_offset = parseInt($handle.css("padding-left"), 10) + parseInt($handle.css("padding-right"), 10);
 
 					$handle.css({
-						width: $box.outerWidth() - padding_offset,
+						width: (parseInt($box.outerWidth(), 10) - padding_offset) + "px",
 					});
 	
                 		        var bo = $box.offset();
