@@ -43,7 +43,11 @@ limitations under the License.
 					if(settings.height !== null)
 						cssSize.height = settings.height;
 					$box.css(cssSize);
-					$handle.css(cssSize);
+					var padding_offset = $handle.css("padding-left") + $handle.css("padding-right");
+
+					$handle.css({
+						width: $box.outerWidth() - padding_offset,
+					});
 	
                 		        var bo = $box.offset();
         	                	var ho = $handle.offset();
@@ -94,7 +98,6 @@ limitations under the License.
 
 	
 					var position = locations[settings.position];
-	
 					if($lastHandle === null) {
 						// TODO: check if we have to do the join for .position.
 						$handle.position({
@@ -113,7 +116,6 @@ limitations under the License.
 						$lastBox = $box;
 						$lastHandle = $handle;
 					}
-
 
 					$box.position({
 						my:     position.box.anchor.join(" "),
@@ -136,7 +138,11 @@ limitations under the License.
 	                	                });
         	                	};
 
-	        	                var slideOut = function() {
+	        	                var slideOut = function(hideFirst) {
+						if(typeof hideFirst != "undefined") {
+							$box.hide();
+						}
+
 	                	                $box.css("top", "auto");
         	                	        $handle.css("top", "auto");
 	                	                $box.animate({
@@ -155,7 +161,7 @@ limitations under the License.
 						}
 					});
 
-        		                slideOut($box);
+        		                slideOut.call($box, true);
                 		        $handle.click(function(e) {
                         		        e.preventDefault();
                                 		if($box.hasClass("open")) {
