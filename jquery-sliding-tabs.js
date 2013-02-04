@@ -18,9 +18,82 @@ limitations under the License.
 */
 
 (function($) {
+	var spacing = 8;
+	var offset = 8;
+	var locations = {
+		bottom: {
+			first: {
+				anchor: ["left", "bottom"],
+				position: ["left", "bottom+" + offset]
+			},
+			handles: {
+				anchor: ["left", "bottom"],
+				position: ["right+" + spacing, "top"]
+			},
+			box: {
+				anchor: ["left", "top"],
+				position: ["left", "bottom"]
+			}
+		},
+
+		top: {
+			first: {
+				anchor: ["left", "top"],
+				position: ["left", "top+" + offset]
+		       	},
+			handles: {
+				anchor: ["left", "top"],
+				position: ["right+" + spacing, "bottom"]
+			},
+			box: {  
+				anchor: ["left", "bottom"],
+				position: ["left", "top"]
+			}
+		}
+	};
+
+	var reposition = function(settings) {
+		var position = locations[settings.position];
+		var first = true;
+		jQuery(settings.handle).each(function() {
+			$handle = $(this);
+			$box = $handle.next(settings.contents);
+			if(first) {
+	                        $handle.position({
+                                	my: position.first.anchor.join(" "),
+                        	        at: position.first.position.join(" "),
+                	                of: "body"
+        	                });
+	                        $lastBox = $box;
+                        	$lastHandle = $handle;
+				first = false;
+                	} else {
+				$handle.position({
+	                                my: position.handles.anchor.join(" "),
+        	                        at: position.handles.position.join(" "),
+                	                of: $lastBox
+                        	});
+	                        $lastBox = $box;
+        	                $lastHandle = $handle;
+			}
+			$box.css("top", "auto");
+			$handle.css("top", "auto");
+
+			$box.position({
+				my:     position.box.anchor.join(" "),
+				at:     position.box.position.join(" "),
+				of:     $handle
+			});
+
+			$box.css("position", "fixed");
+			$handle.css("position", "fixed");
+		});
+	}
+
 	var methods = {
 		create: function(options) {
 				var defaults = {
+					handle: '.handle',
 					contents: '.contents', 	// the selector for the contents div.
 					width: '250px',		// new: this is now fixed (the handle and the box get the same width)
 					height: null,		// optional: force the heights to be the same (recommended)
@@ -35,6 +108,7 @@ limitations under the License.
 				}, settings = $.extend(defaults, options);
 
 				var $lastHandle = null;
+				var $lastBox = null;
 				jQuery(this).each(function() { 
 	                	        var $handle = jQuery(this);	
         	                	var $box = $handle.next(settings.contents);
@@ -60,67 +134,11 @@ limitations under the License.
                 		                handleHeight:   parseInt($handle.outerHeight(), 10) + 'px'
                         		};
 
-		                        $box.css(    { position: 'absolute' } );
-        		                $handle.css( { position: 'absolute' } );
+					var positionType = "absolute";
+		                        $box.css(    { position: positionType } );
+        		                $handle.css( { position: positionType } );
 
-					var spacing = 8;
-					var locations = {
-						bottom: {
-							first: {
-								anchor: ["left", "bottom"],
-								position: ["left", "bottom+" + settings.offset]
-							},
-							handles: {
-								anchor: ["left", "bottom"],
-								position: ["right+" + spacing, "top"]
-							},
-							box: {
-								anchor: ["left", "top"],
-								position: ["left", "bottom"]
-							}
-						},
-	
-						top: {
-							first: {
-								anchor: ["left", "top"],
-								position: ["left", "top+" + settings.offset]
-							},
-							handles: {
-								anchor: ["left", "top"],
-								position: ["right+" + spacing, "bottom"]
-							},
-							box: {
-								anchor: ["left", "bottom"],
-								position: ["left", "top"]
-							}	
-						}
-					};
-
-					var position = locations[settings.position];
-					if($lastHandle === null) {
-						// TODO: check if we have to do the join for .position.
-						$handle.position({
-							my: position.first.anchor.join(" "),
-							at: position.first.position.join(" "), 
-							of: "body"
-						});
-						$lastBox = $box;
-						$lastHandle = $handle;
-					} else {
-						$handle.position({
-							my: position.handles.anchor.join(" "),
-							at: position.handles.position.join(" "),
-							of: $lastBox
-						});
-						$lastBox = $box;
-						$lastHandle = $handle;
-					}
-
-					$box.position({
-						my:     position.box.anchor.join(" "),
-						at:     position.box.position.join(" "),
-						of:     $handle
-					});
+					var $lasts = reposition(settings)
 
 					// TODO: slide in/out needs to consider what mode we're in
         		                var slideIn = function() {
@@ -160,7 +178,7 @@ limitations under the License.
 						}
 					});
 
-        		                slideOut.call($box, true);
+					slideIn(); slideOut(true);
                 		        $handle.click(function(e) {
                         		        e.preventDefault();
                                 		if($box.hasClass("open")) {
@@ -171,6 +189,7 @@ limitations under the License.
                         		                slideIn();
                                 		}
 		                        });
+	
 				});
 		},
 
